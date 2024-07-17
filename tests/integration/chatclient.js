@@ -23,13 +23,18 @@ describe('ChatClient', async function() {
 
       assert.equal(messageSent, messageToSend);
 
-      // Disconnect the client
-      aliceClient.disconnect();
-
+      /* TODO: Not sure if this is right, but if we are not listening for the event,
+        before calling aliceClient.disconnect(), the event would be emitted, but it
+        won't have anyone to listen for it.
+        That's why I moved the order.
+      */
       // Emit an event when the client has been disconnected
       aliceClient.on('disconnected', () => {
         done();
       });
+
+      // Disconnect the client
+      aliceClient.disconnect();
     });
   });
 });
